@@ -209,6 +209,11 @@ public class ResFlags extends ResAttribute {
             formatted = sb.toString();
         }
 
+        // Redirect 0x0 flags to @null to prevent compiler complaints
+        if ((formatted == null || formatted.isEmpty()) && data == 0) {
+            formatted = "@null";
+        }
+
         mFormatsCache.put(data, formatted);
         return formatted;
     }
