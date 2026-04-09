@@ -275,9 +275,11 @@ public class BinaryXmlResourceParser implements XmlPullParser {
         // #2972 - If the namespace index is -1, the attribute is not present, but if the attribute is from system we
         // can resolve it to the default namespace. This may prove to be too aggressive as we scope the entire system
         // namespace, but it's better than not resolving it at all.
+
         if (attr.ns < 0) {
             if (nameId.pkgId() == ResTable.APP_PACKAGE_ID) {
-                return getNonDefaultNamespaceUri(index);
+                // Remove aggressive resolving to prevent namespacing app internals as "android:"
+                return ResXmlUtils.ANDROID_RES_NS_AUTO;
             }
             if (nameId.pkgId() == ResTable.SYS_PACKAGE_ID) {
                 return ResXmlUtils.ANDROID_RES_NS;
